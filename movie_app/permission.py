@@ -1,0 +1,16 @@
+from rest_framework import permissions
+from rest_framework.permissions import BasePermission
+
+
+class CheckStatus(BasePermission):
+    def has_permission(self, request, view):
+        return request.user.status == 'pro'
+
+
+class CheckMovie(BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if request.user.status == 'pro':
+            return True
+        elif request.user.status == 'pro' and obj.status_movie == 'simple':
+            return True
+        return False
